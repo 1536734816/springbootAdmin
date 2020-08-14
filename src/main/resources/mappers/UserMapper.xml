@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wh.spring.admin.mapper.UserMapper">
+    <resultMap id="role_join_role_right" type="com.wh.spring.admin.entity.User">
+<!--        <id column="id" property="id" jdbcType="INTEGER"/>-->
+
+        <collection property="roles" ofType="com.wh.spring.admin.entity.Role" fetchType="lazy"
+                    select="userToRole" column="id">
+        </collection>
+    </resultMap>
+    <select id="userToRole" resultMap="role_join_role_right">
+        select * from sys_user_role , sys_role where sys_user_role.user_id=sys_role.id and sys_user_role.user_id=#{id}
+    </select>
+
+
+</mapper>
