@@ -30,7 +30,7 @@ public class EncryptUtils {
             e.printStackTrace();
         }
 
-        return encodeStr;
+        return encodeStr.substring(0,50);
     }
 
     /**

@@ -20,7 +20,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
         PrintWriter writer = httpServletResponse.getWriter();
-        writer.print(JSON.toJSONString(RetUtils.retError("权限不足!")));
+        writer.print(JSON.toJSONString(RetUtils.retError("没有权限访问")));
         writer.flush();
         writer.close();
     }

@@ -43,9 +43,11 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         if (null == map) {
             loadResourceDefine();
         }
+        System.out.println(map);
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
         for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
             String url = it.next();
+            System.out.println(request.getRequestURL());
             if (new AntPathRequestMatcher(url).matches(request)) {
                 return map.get(url);
             }

@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_user")
+@TableName(value = "sys_user",resultMap = "role_join_role_right")
 public class User extends BaseEntity implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;

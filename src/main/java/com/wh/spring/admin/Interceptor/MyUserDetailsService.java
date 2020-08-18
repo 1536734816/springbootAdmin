@@ -27,8 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         //查数据库
-        System.out.println("我在MyUserDetailsService");
-        System.out.println(userName);
+        //System.out.println("我在MyUserDetailsService");
         User user = userService.getByUserName(userName);
         if (null != user) {
             List<Role> roles =roleMapper.getRolesByUserId(user.getId());
@@ -36,6 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         //System.out.println("我在MyUserDetailsService->"+user);
         if (user==null){
+            System.out.println("找不到该账户信息");
             throw new UsernameNotFoundException("找不到该账户信息！");//抛出异常，会根据配置跳到登录失败页面
         }
         return user;

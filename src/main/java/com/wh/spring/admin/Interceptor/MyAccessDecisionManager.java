@@ -21,7 +21,6 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
      * @author : WH
      * @date : 2020-08-11 14:38
      **/
-
     /**
      * 通过传递的参数来决定用户是否有访问对应受保护对象的权限
      *
@@ -37,13 +36,14 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             String needRole;
             for (Iterator<ConfigAttribute> iter = configAttributes.iterator(); iter.hasNext(); ) {
                 needRole = iter.next().getAttribute();
-                //System.out.println("我的权限->"+needRole);
                 for (GrantedAuthority ga : authentication.getAuthorities()) {
                     if (needRole.trim().equals(ga.getAuthority().trim())) {
-                        return;
+                        System.out.println("我的权限->"+needRole);
+                        return ;
                     }
                 }
             }
+            System.out.println("我没有权限");
             throw new AccessDeniedException("当前访问没有权限");
         }
 

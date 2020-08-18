@@ -1,6 +1,7 @@
 package com.wh.spring.admin.config;
 
 import com.wh.spring.admin.Interceptor.*;
+import com.wh.spring.admin.util.EncryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.DigestUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UrlLogoutSuccessHandler urlLogoutSuccessHandler;
 
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         ////校验用户
@@ -35,17 +34,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //对密码进行加密
             @Override
             public String encode(CharSequence charSequence) {
-                System.out.println(charSequence.toString());
-                return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+                //System.out.println(charSequence.toString());
+                //return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+                return EncryptUtils.sha256(charSequence.toString());
+
             }
 
             //对密码进行判断匹配
             @Override
             public boolean matches(CharSequence charSequence, String s) {
-                System.out.println(s);
-
-                String encode = DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
-                System.out.println(encode);
+                //String encode = DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+                String encode = EncryptUtils.sha256(charSequence.toString());
+                //System.out.println("encode"+encode);
                 boolean res = s.equals(encode);
                 return res;
             }
@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(urlAuthenticationSuccessHandler)
                 .failureHandler(urlAuthenticationFailureHandler).permitAll()
                 //关闭拦截未登录时自动跳转，改为返回json信息
-                .and().exceptionHandling().accessDeniedHandler(myAccessDeniedHandler).authenticationEntryPoint(myLoginUrlAuthenticationEntryPoint)
+                .and().exceptionHandling().authenticationEntryPoint(myLoginUrlAuthenticationEntryPoint).accessDeniedHandler(myAccessDeniedHandler)
                 .and().logout().logoutUrl("/admin/logout")
                 //注销成功处理器
                 .logoutSuccessHandler(urlLogoutSuccessHandler).permitAll()

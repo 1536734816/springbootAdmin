@@ -13,5 +13,6 @@ import com.wh.spring.admin.entity.UserRole;
  * @since 2020-08-06
  */
 public interface IUserRoleService extends IService<UserRole> {
+    public UserRole isExist(Integer uesrId,Integer roleId);
 
 }
